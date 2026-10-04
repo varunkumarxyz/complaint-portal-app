@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Complaint Portal</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            width: 420px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+            padding: 28px;
+        }
+        h2 { margin-top: 0; }
+        .field { margin-bottom: 16px; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; }
+        input, button {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+        }
+        button {
+            background: #198754;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .flash {
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+        .flash.error { background: #fce8e6; color: #b42318; }
+        .flash.success { background: #ecfdf5; color: #027a48; }
+        .demo {
+            margin-top: 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px;
+            color: #374151;
+        }
+        ul { margin: 8px 0 0 20px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Portal Login</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="field">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="demo">
+            Demo accounts:
+            <ul>
+                <li>chairperson / chair123</li>
+                <li>ward1 / ward123</li>
+                <li>v1 / verify123</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

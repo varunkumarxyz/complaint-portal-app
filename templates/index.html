@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mumbai Complaint Portal</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+            padding: 30px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h1, h2, h3 {
+            margin: 0;
+        }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        .flash {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+        .flash.error { background: #fce8e6; color: #b42318; }
+        .flash.success { background: #ecfdf5; color: #027a48; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+        .field {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        button {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0d6efd, #1d4ed8);
+            color: white;
+            padding: 22px 26px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+        }
+        .hero p { margin: 10px 0 0; }
+        .info-list {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .badge {
+            background: #e0f2fe;
+            color: #0f172a;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        @media (max-width: 760px) {
+            .grid { grid-template-columns: 1fr; }
+            .topbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Mumbai Ward Complaint Portal</h1>
+            <p>Submit complaints by ward, verify with OTP, and track resolution with ward-head and chairperson oversight.</p>
+            <div class="info-list">
+                <span class="badge">20 Wards</span>
+                <span class="badge">Hindi / English</span>
+                <span class="badge">OTP Verification</span>
+                <span class="badge">30-Day SLA</span>
+            </div>
+        </div>
+
+        <div class="topbar">
+            <h2>Submit Complaint</h2>
+            <div class="nav-links">
+                <a href="{{ url_for('login') }}">Login</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('submit_complaint') }}" enctype="multipart/form-data">
+            <div class="grid">
+                <div>
+                    <div class="field">
+                        <label for="ward_id">Ward</label>
+                        <select id="ward_id" name="ward_id" required>
+                            {% for ward in wards %}
+                                <option value="{{ loop.index }}">{{ ward }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input id="name" type="text" name="name" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" type="tel" name="phone" placeholder="+91 98765 43210" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="language">Language</label>
+                        <select id="language" name="language">
+                            <option value="en">English</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="field">
+                        <label for="issue">Issue</label>
+                        <input id="issue" type="text" name="issue" placeholder="Streetlight / Water / Garbage / Drainage" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="details">Detailed Explanation</label>
+                        <textarea id="details" name="details" placeholder="Explain the complaint in detail" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="photo">Upload Photo</label>
+                        <input id="photo" type="file" name="photo" accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Submit Complaint</button>
+        </form>
+    </div>
+</body>
+</html>

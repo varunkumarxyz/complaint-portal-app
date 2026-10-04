@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .otp-box {
+            width: 420px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+            padding: 28px;
+        }
+        h2 { margin-top: 0; }
+        .field { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; }
+        input, button {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+        }
+        button {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .flash {
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+        .flash.error { background: #fce8e6; color: #b42318; }
+        .flash.success { background: #ecfdf5; color: #027a48; }
+    </style>
+</head>
+<body>
+    <div class="otp-box">
+        <h2>Verify Complaint</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('verify_otp') }}">
+            <input type="hidden" name="complaint_id" value="{{ complaint_id }}">
+            <div class="field">
+                <label for="otp">Enter OTP</label>
+                <input id="otp" type="text" name="otp" placeholder="6-digit OTP" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
+</body>
+</html>
